@@ -14,3 +14,6 @@ yarn-error.log*
 # Production
 /build
 /dist 
+certs1/192.168.0.104-key.pem
+certs1/192.168.0.104.pem
+package-lock.json

@@ -33,6 +33,14 @@ const socketHandler = (io) => {
 
       io.to(callerId).emit("callAccepted", data.signal);
     });
+
+    // Nhận phụ đề từ một client và chuyển tiếp cho người còn lại
+    socket.on("subtitle", (text) => {
+      const partnerId = callMap[socket.id];
+      if (partnerId) {
+        io.to(partnerId).emit("subtitle", text);
+      }
+    });
   });
 };
 
