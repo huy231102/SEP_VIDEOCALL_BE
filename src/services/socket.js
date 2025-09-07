@@ -24,14 +24,15 @@ const socketHandler = (io) => {
     });
 
     socket.on("answerCall", (data) => {
-      const callerId = data.to;
+      const { signal, to: callerId, name } = data;
       const calleeId = socket.id; // Người dùng trả lời cuộc gọi
 
       // Liên kết hai người dùng với nhau khi cuộc gọi được chấp nhận
       callMap[callerId] = calleeId;
       callMap[calleeId] = callerId;
 
-      io.to(callerId).emit("callAccepted", data.signal);
+      // Gửi lại cho người gọi cả signal và tên của người trả lời
+      io.to(callerId).emit("callAccepted", { signal, name });
     });
 
     // Nhận phụ đề từ một client và chuyển tiếp cho người còn lại
