@@ -35,6 +35,16 @@ const socketHandler = (io) => {
       io.to(callerId).emit("callAccepted", { signal, name });
     });
 
+    // Khi một người dùng chủ động kết thúc cuộc gọi
+    socket.on("endCall", () => {
+      const partnerId = callMap[socket.id];
+      if (partnerId) {
+        io.to(partnerId).emit("callEnded");
+        delete callMap[socket.id];
+        delete callMap[partnerId];
+      }
+    });
+
     // Nhận phụ đề từ một client và chuyển tiếp cho người còn lại
     socket.on("subtitle", (text) => {
       const partnerId = callMap[socket.id];
