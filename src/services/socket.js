@@ -48,8 +48,11 @@ const socketHandler = (io) => {
     // Nhận phụ đề từ một client và chuyển tiếp cho người còn lại
     socket.on("subtitle", (text) => {
       const partnerId = callMap[socket.id];
+      console.log(`[Subtitle] từ ${socket.id} -> ${partnerId || 'null'}:`, text);
       if (partnerId) {
         io.to(partnerId).emit("subtitle", text);
+      } else {
+        console.warn(`[Subtitle] Không tìm thấy partner cho ${socket.id}. callMap:`, callMap);
       }
     });
   });
